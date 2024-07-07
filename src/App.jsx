@@ -9,11 +9,11 @@ const App = () => {
   return (
     <>
       <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Auth />}>
           <Route index element={<Home />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="*" element={<NoteFound />} />
       </Routes>
     </>
