@@ -56,7 +56,6 @@ const Login = () => {
                         padding: "48px 28px",
                         borderRadius: 2,
                         boxShadow: 3,
-                        height: "480px"
                     }}
                 >
                     <Typography component="h1" sx={{ fontSize: "32px", fontWeight: 700, lineHeight: "45.18px", color: "#151515", mb: "36px" }}>
