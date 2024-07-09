@@ -1,32 +1,29 @@
 import { Box, Button, Typography } from "@mui/material";
 import Header from "../../components/header/Header";
-import { memo, useState, useCallback } from "react";
-import PropTypes from "prop-types";
-import "./Home.scss";
-import ModalCreate from "../../components/modal/Modal";
+import { memo, useState, useCallback, useEffect } from "react";
 import BookCard from "../../components/book-card/BookCard";
 import { useGetBooksQuery } from "../../context/api/booksApi";
-
-// const booksData = [
-//     { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "New", cover: "http://url.to.book.cover" },
-//     { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "Reading", cover: "http://url.to.book.cover" },
-//     { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "Finished", cover: "http://url.to.book.cover" }
-// ];
+import ModalCreate from "../../components/modal/Modal";
 
 const Home = () => {
     const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState("")
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
-    const { data } = useGetBooksQuery()
-    console.log(data);
+    const { data, refetch } = useGetBooksQuery({ title: search.trim() });
+
+    useEffect(() => {
+        refetch();
+    }, [data, refetch]);
+
     return (
-        <section>
-            <Header />
+        <div className="pages">
+            <Header search={search} setSearch={setSearch} />
             <Box className="container" sx={{ mt: "36px" }}>
                 <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", mb: "36px" }}>
                     <Box>
                         <Typography variant="h1" sx={{ fontSize: '36px', fontWeight: 700, lineHeight: '45.18px', color: "#FEFEFE", mb: "12px" }}>
-                            You’ve got <span style={{ color: "#6200EE" }}>7 book</span>
+                            You’ve got <span style={{ color: "#6200EE" }}>{data ? data.length : 0} books</span>
                         </Typography>
                         <Typography sx={{ fontSize: '20px', fontWeight: 400, lineHeight: '25.1px', color: "#FEFEFE" }}>Your books today</Typography>
                     </Box>
@@ -35,27 +32,15 @@ const Home = () => {
                     </Button>
                 </Box>
                 <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr"} gap={3}>
-                    {data?.slice(0,6).map((book) => (
+                    {data ? data.slice(0, 6).map((book) => (
                         <BookCard key={book.id} book={book} />
-                    ))}
+                    )) : null}
                 </Box>
-                <ModalCreate open={open} setOpen={setOpen} handleClose={handleClose} />
+                <ModalCreate open={open} setOpen={setOpen} />
             </Box>
-        </section>
+        </div>
     );
 }
 
-Home.propTypes = {
-    books: PropTypes.arrayOf(
-        PropTypes.shape({
-            title: PropTypes.string.isRequired,
-            pages: PropTypes.number.isRequired,
-            published: PropTypes.number.isRequired,
-            isbn: PropTypes.string.isRequired,
-            status: PropTypes.string.isRequired,
-            cover: PropTypes.string.isRequired
-        })
-    )
-};
 
 export default memo(Home);

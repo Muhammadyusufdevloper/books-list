@@ -9,15 +9,15 @@ import { Avatar, Box, Badge, InputBase, IconButton, Menu, MenuItem } from "@mui/
 import { useDispatch } from "react-redux";
 import { logout } from "../../context/slices/authSlice";
 
-const Header = () => {
+const Header = ({ search, setSearch }) => {
     const [searchChange, setSearchChange] = useState(false);
-    const [searchValue, setSearchValue] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
     const searchFormRef = useRef();
     const dispatch = useDispatch()
     const handleClickOutside = (event) => {
         if (searchFormRef.current && !searchFormRef.current.contains(event.target)) {
-            setSearchChange(false);
+            setSearchChange(false)
+            setSearch("")
         }
     };
 
@@ -68,8 +68,8 @@ const Header = () => {
                             <BiSearchAlt style={{ color: searchChange ? '#333333' : '#fefefe' }} />
                         </IconButton>
                         <InputBase
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             sx={{
                                 padding: '10px 0',
                                 flexGrow: 1,
@@ -90,7 +90,7 @@ const Header = () => {
                             placeholder="Search for any training you want"
                         />
                         {searchChange && (
-                            <IconButton onClick={() => setSearchValue("")} type="button">
+                            <IconButton onClick={() => setSearch("")} type="button">
                                 <IoCloseCircleOutline style={{ color: '#333333' }} />
                             </IconButton>
                         )}

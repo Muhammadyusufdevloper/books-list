@@ -3,41 +3,41 @@ import { api } from './index'
 export const productApi = api.injectEndpoints({
   endpoints: (build) => ({
     getBooks: build.query({
-      query: (params) => ({ 
-        url: '/books', 
-        params 
+      query: (params) => ({
+        url: '/books',
+        params
       }),
-      providesTags:["Product"]
+      providesTags: ["Books"]
     }),
-    createProduct: build.mutation({
-      query: (body)=> ({
-        url:"/products",
+    createBooks: build.mutation({
+      query: (body) => ({
+        url: "/books",
         method: "POST",
         body
       }),
-      invalidatesTags: ["Product"]
+      invalidatesTags: ["Books"]
     }),
-    deleteProduct: build.mutation({
-      query: (id)=> ({
-        url:`/products/${id}`,
+    deleteBooks: build.mutation({
+      query: (id) => ({
+        url: `/books/${id}`,
         method: "DELETE"
       }),
-      invalidatesTags: ["Product"]
+      invalidatesTags: ["Books"]
     }),
-    updateProduct: build.mutation({
-      query: ({id, body})=> ({
-        url:`/products/${id}`,
+    updateBooks: build.mutation({
+      query: ({ id, body }) => ({
+        url: `/books/${id}`,
         method: "PUT", // or "PATCH"
         body
       }),
-      invalidatesTags: ["Product"]
+      invalidatesTags: ["Books"]
     })
   }),
 })
 
 export const {
   useGetBooksQuery,
-  useCreateProductMutation,
-  useDeleteProductMutation,
-  useUpdateProductMutation
+  useCreateBooksMutation,
+  useDeleteBooksMutation,
+  useUpdateBooksMutation
 } = productApi

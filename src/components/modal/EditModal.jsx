@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Box, IconButton, TextField, Typography, Modal, Button, Snackbar, Alert } from "@mui/material";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import PropTypes from "prop-types";
-import { useCreateBooksMutation } from "../../context/api/booksApi";
+import { useUpdateBooksMutation } from "../../context/api/booksApi";
 
 const initialState = {
     isbn: "",
@@ -14,17 +14,23 @@ const initialState = {
     status: ""
 };
 
-const ModalCreate = ({ setOpen, open }) => {
+const ModalEdit = ({ setOpen, open, setEdit, edit }) => {
     const [formValues, setFormValues] = useState(initialState);
     const handleClose = useCallback(() => setOpen(false), [setOpen]);
-    const [createBook, { isSuccess, error }] = useCreateBooksMutation();
+    const [updateBooks, { isSuccess, error }] = useUpdateBooksMutation();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
     useEffect(() => {
+        if (edit) {
+            setFormValues(edit);
+        }
+    }, [edit]);
+
+    useEffect(() => {
         if (isSuccess) {
-            setSnackbarMessage(`Book created successfully \n Lorem ipsum dolor sit amet consectetur. Pulvinar facilisis cras ac a amet augue vel egestas urna. Neque habitant consectetur amet.`);
+            setSnackbarMessage("Book updated successfully");
             setSnackbarSeverity("success");
             setSnackbarOpen(true);
             handleClose();
@@ -32,12 +38,13 @@ const ModalCreate = ({ setOpen, open }) => {
                 handleClose();
             }, 2000);
             setFormValues(initialState);
+            setEdit(null);
         } else if (error) {
-            setSnackbarMessage("Failed to create book");
+            setSnackbarMessage("Failed to update book");
             setSnackbarSeverity("error");
             setSnackbarOpen(true);
         }
-    }, [isSuccess, error, handleClose]);
+    }, [isSuccess, error, handleClose, setEdit]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -45,7 +52,7 @@ const ModalCreate = ({ setOpen, open }) => {
     };
 
     const handleSubmit = () => {
-        createBook(formValues);
+        updateBooks({ id: edit.id, body: formValues });
     };
 
     const handleSnackbarClose = (event, reason) => {
@@ -78,7 +85,7 @@ const ModalCreate = ({ setOpen, open }) => {
                 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Create a book
+                            Edit Book
                         </Typography>
                         <IconButton onClick={handleClose}>
                             <IoCloseCircleOutline />
@@ -149,7 +156,7 @@ const ModalCreate = ({ setOpen, open }) => {
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: "12px" }}>
                         <Button variant="outlined" sx={{ flexGrow: "1" }} onClick={handleClose}>Close</Button>
-                        <Button variant="contained" sx={{ background: "#6200EE", flexGrow: "1" }} onClick={handleSubmit}>Submit</Button>
+                        <Button variant="contained" sx={{ background: "#6200EE", flexGrow: "1" }} onClick={handleSubmit}>Save</Button>
                     </Box>
                 </Box>
             </Modal>
@@ -167,9 +174,11 @@ const ModalCreate = ({ setOpen, open }) => {
     );
 }
 
-ModalCreate.propTypes = {
+ModalEdit.propTypes = {
     setOpen: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
+    edit: PropTypes.object,
+    setEdit: PropTypes.func.isRequired,
 };
 
-export default ModalCreate;
+export default ModalEdit;

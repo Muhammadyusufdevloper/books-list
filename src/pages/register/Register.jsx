@@ -49,7 +49,7 @@ const Register = () => {
 
     }
     return (
-        <section style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className='pages' style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Box width={430}>
                 <Box
                     sx={{
@@ -155,7 +155,7 @@ const Register = () => {
                     </Box>
                 </Box>
             </Box>
-        </section>
+        </div>
     );
 };
 
