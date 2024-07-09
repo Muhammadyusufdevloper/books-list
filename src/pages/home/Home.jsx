@@ -4,13 +4,14 @@ import { memo, useState, useCallback, useEffect } from "react";
 import BookCard from "../../components/book-card/BookCard";
 import { useGetBooksQuery } from "../../context/api/booksApi";
 import ModalCreate from "../../components/modal/Modal";
+import Loading from "../../components/loading/Loading";
 
 const Home = () => {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("")
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
-    const { data, refetch } = useGetBooksQuery({ title: search.trim() });
+    const { isLoading, data, refetch } = useGetBooksQuery({ title: search.trim() });
 
     useEffect(() => {
         refetch();
@@ -31,11 +32,16 @@ const Home = () => {
                         <span>+</span> Create a book
                     </Button>
                 </Box>
-                <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr"} gap={3}>
-                    {data ? data.slice(0, 9).map((book) => (
-                        <BookCard key={book.id} book={book} />
-                    )) : null}
-                </Box>
+                {
+                    isLoading ?
+                        <Loading />
+                        :
+                        <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr"} gap={3}>
+                            {data ? data.slice(0, 9).map((book) => (
+                                <BookCard key={book.id} book={book} />
+                            )) : null}
+                        </Box>
+                }
                 <ModalCreate open={open} setOpen={setOpen} />
             </Box>
         </div>
