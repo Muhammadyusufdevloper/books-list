@@ -6,10 +6,10 @@ import { FiEdit3 } from "react-icons/fi";
 
 const BookCard = ({ book }) => {
     const statusColor = useMemo(() => {
-        switch (book.status) {
-            case "New": return "#FF0000";
-            case "Reading": return "#FFEC43";
-            case "Finished": return "#00FF29";
+        switch (book.status?.toLowerCase()) {
+            case "new": return "#FF0000";
+            case "reading": return "#FFEC43";
+            case "finished": return "#00FF29";
             default: return "#FFFFFF";
         }
     }, [book.status]);
@@ -25,14 +25,20 @@ const BookCard = ({ book }) => {
         >
             <Card sx={{ borderRadius: "12px" }}>
                 <CardContent sx={{ padding: "32px" }}>
-                    <Typography sx={{ fontFamily: "Montserrat", fontSize: "16px", fontWeight: 600, mb: "6px" }}>{book.title}</Typography>
+                    <Typography sx={{
+                        fontFamily: "Montserrat", fontSize: "16px", fontWeight: 600, mb: "6px", overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '1',
+                        WebkitBoxOrient: 'vertical',
+                    }}>{book.title}</Typography>
                     <Typography sx={{ fontSize: "14px", fontWeight: 400 }}>Cover: <a href={book.cover}>{book.cover}</a></Typography>
                     <Typography sx={{ fontSize: "14px", fontWeight: 400 }}>Pages: {book.pages}</Typography>
                     <Typography sx={{ fontSize: "14px", fontWeight: 400 }}>Published: {book.published}</Typography>
                     <Typography sx={{ fontSize: "14px", fontWeight: 400 }}>ISBN: {book.isbn}</Typography>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mt: "16px" }}>
                         <Typography sx={{ fontSize: "14px", fontWeight: 400 }}>{book.published} / Eben Upton</Typography>
-                        <Typography sx={{ fontSize: "16px", fontWeight: 700, p: "2px 12px", color: "#FFFFFF", background: statusColor, borderRadius: "8.5px" }}>{book.status}</Typography>
+                        <Typography sx={{ fontSize: "16px", fontWeight: 700, p: "2px 12px", color: "#FFFFFF", background: statusColor, borderRadius: "8.5px" }}>{book.status.slice(0,1).toUpperCase() + book.status.slice(1).toLowerCase()}</Typography>
                     </Box>
                 </CardContent>
             </Card>

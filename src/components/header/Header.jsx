@@ -38,7 +38,7 @@ const Header = () => {
     };
     const handelLogout = () => {
         handleMenuClose(),
-            dispatch(logout)
+            dispatch(logout())
     }
     return (
         <header style={{ padding: " 12px 0" }}>
@@ -50,7 +50,7 @@ const Header = () => {
                     <Box
                         component="form"
                         ref={searchFormRef}
-                        onClick={() => setSearchChange(true)}
+                        onClick={() => { setSearchChange(true) }}
                         sx={{
                             position: 'relative',
                             display: 'flex',

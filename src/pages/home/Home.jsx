@@ -5,19 +5,20 @@ import PropTypes from "prop-types";
 import "./Home.scss";
 import ModalCreate from "../../components/modal/Modal";
 import BookCard from "../../components/book-card/BookCard";
+import { useGetBooksQuery } from "../../context/api/booksApi";
 
-const booksData = [
-    { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "New", cover: "http://url.to.book.cover" },
-    { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "Reading", cover: "http://url.to.book.cover" },
-    { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "Finished", cover: "http://url.to.book.cover" }
-];
+// const booksData = [
+//     { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "New", cover: "http://url.to.book.cover" },
+//     { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "Reading", cover: "http://url.to.book.cover" },
+//     { title: "Raspberry Pi User Guide", pages: 221, published: 2012, isbn: "9781118464465", status: "Finished", cover: "http://url.to.book.cover" }
+// ];
 
 const Home = () => {
     const [open, setOpen] = useState(false);
-
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
-
+    const { data } = useGetBooksQuery()
+    console.log(data);
     return (
         <section>
             <Header />
@@ -34,8 +35,8 @@ const Home = () => {
                     </Button>
                 </Box>
                 <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr"} gap={3}>
-                    {booksData.map((book, index) => (
-                        <BookCard key={index} book={book} />
+                    {data?.slice(0,6).map((book) => (
+                        <BookCard key={book.id} book={book} />
                     ))}
                 </Box>
                 <ModalCreate open={open} setOpen={setOpen} handleClose={handleClose} />

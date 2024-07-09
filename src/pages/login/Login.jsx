@@ -15,7 +15,7 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { data, isSuccess, isLoading } = useSignInQuery();
+    const { data, isLoading } = useSignInQuery();
 
     const validationSchema = Yup.object({
         username: Yup.string().required('Username is required'),
@@ -24,8 +24,8 @@ const Login = () => {
 
     const formik = useFormik({
         initialValues: {
-            username: '',
-            password: ''
+            username: 'john_32',
+            password: '12345678'
         },
         validationSchema: validationSchema,
         onSubmit: (values, { setErrors }) => {

@@ -35,7 +35,7 @@ const ModalCreate = ({ setOpen, open }) => {
                     </IconButton>
                 </Box>
                 <TextField
-                    label="ISBN"
+                    label="Isbn"
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 2 }}
