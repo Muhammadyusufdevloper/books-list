@@ -32,7 +32,7 @@ const Home = () => {
                     </Button>
                 </Box>
                 <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr"} gap={3}>
-                    {data ? data.slice(0, 6).map((book) => (
+                    {data ? data.slice(0, 9).map((book) => (
                         <BookCard key={book.id} book={book} />
                     )) : null}
                 </Box>
